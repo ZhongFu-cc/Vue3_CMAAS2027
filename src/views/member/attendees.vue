@@ -1,149 +1,151 @@
 <!--  -->
 <template>
-  <div class="content">
-    <BasicComponent title="與會者管理" :totalCount="attendeeList.total + ' 人'">
+  <div>
+    <div class="content">
+      <BasicComponent title="與會者管理" :totalCount="attendeeList.total + ' 人'">
 
-      <template #option-box>
-        <div class="btn-box">
-          <el-button type="danger" @click="deleteAttendeeList" :disabled="selectList.length > 0 ? false : true">
-            批量刪除<el-icon class="el-icon--right">
-              <Delete />
-            </el-icon>
-          </el-button>
+        <template #option-box>
+          <div class="btn-box">
+            <el-button type="danger" @click="deleteAttendeeList" :disabled="selectList.length > 0 ? false : true">
+              批量刪除<el-icon class="el-icon--right">
+                <Delete />
+              </el-icon>
+            </el-button>
 
-          <el-button type="success" @click="importExcelDialogState.openDialog()">
-            Excel批量更新
-          </el-button>
+            <el-button type="success" @click="importExcelDialogState.openDialog()">
+              Excel批量更新
+            </el-button>
 
-          <el-button type="success" @click="downloadExcel">
-            下載Excel
-          </el-button>
-        </div>
-      </template>
+            <el-button type="success" @click="downloadExcel">
+              下載Excel
+            </el-button>
+          </div>
+        </template>
 
-      <template #search-box>
-        <el-input v-model="input" style="width: 240px" placeholder="輸入內容,Enter查詢" @input="getAttendeeList()" />
-      </template>
+        <template #search-box>
+          <el-input v-model="input" style="width: 240px" placeholder="輸入內容,Enter查詢" @input="getAttendeeList()" />
+        </template>
 
-      <template #data-table>
-        <el-table class="news-table" :data="attendeeList.records" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55" />
-          <el-table-column fixed prop="firstName" label="名字" width="90">
-            <template #default="scope">
-              {{ scope.row.member.firstName }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed prop="lastName" label="姓氏" width="90">
-            <template #default="scope">
-              {{ scope.row.member.lastName }}
-            </template>
-          </el-table-column>
+        <template #data-table>
+          <el-table class="news-table" :data="attendeeList.records" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55" />
+            <el-table-column fixed prop="firstName" label="名字" width="90">
+              <template #default="scope">
+                {{ scope.row.member.firstName }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed prop="lastName" label="姓氏" width="90">
+              <template #default="scope">
+                {{ scope.row.member.lastName }}
+              </template>
+            </el-table-column>
 
-          <el-table-column fixed prop="idCard" label="身分證" width="190">
-            <template #default="scope">
-              {{ scope.row.member.idCard }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed prop="lastName" label="飲食偏好" width="100">
-            <template #default="scope">
-              {{ scope.row.member.food }}
-            </template>
-          </el-table-column>
+            <el-table-column fixed prop="idCard" label="身分證" width="190">
+              <template #default="scope">
+                {{ scope.row.member.idCard }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed prop="lastName" label="飲食偏好" width="100">
+              <template #default="scope">
+                {{ scope.row.member.food }}
+              </template>
+            </el-table-column>
 
-          <el-table-column prop="email" label="信箱">
-            <template #default="scope">
-              {{ scope.row.member.email }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="phone" label="手機" width="140">
-            <template #default="scope">
-              {{ scope.row.member.phone }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="tagList" label="標籤" min-width="40" align="center">
-            <template #default="scope">
-              <el-popover v-if="scope.row.tagList.length > 0" placement="left-start" title="標籤" :width="200"
-                trigger="hover">
-                <template #reference>
-                  <el-tag v-if="findFirstVaildTag(scope.row.tagList)" size="large" round
-                    :color="findFirstVaildTag(scope.row.tagList).color" effect="light">{{
-                      findFirstVaildTag(scope.row.tagList).name }}</el-tag>
-                </template>
-                <template #default>
-                  <div class="tag-popover-box">
-                    <div v-for="tag in scope.row.tagList" :key="tag.tagId" class="tag-item">
-                      <el-tag v-if="tag.status === 0" size="large" round :color="tag.color">{{
-                        tag.name }}</el-tag>
+            <el-table-column prop="email" label="信箱">
+              <template #default="scope">
+                {{ scope.row.member.email }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="phone" label="手機" width="140">
+              <template #default="scope">
+                {{ scope.row.member.phone }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="tagList" label="標籤" min-width="40" align="center">
+              <template #default="scope">
+                <el-popover v-if="scope.row.tagList.length > 0" placement="left-start" title="標籤" :width="200"
+                  trigger="hover">
+                  <template #reference>
+                    <el-tag v-if="findFirstVaildTag(scope.row.tagList)" size="large" round
+                      :color="findFirstVaildTag(scope.row.tagList).color" effect="light">{{
+                        findFirstVaildTag(scope.row.tagList).name }}</el-tag>
+                  </template>
+                  <template #default>
+                    <div class="tag-popover-box">
+                      <div v-for="tag in scope.row.tagList" :key="tag.tagId" class="tag-item">
+                        <el-tag v-if="tag.status === 0" size="large" round :color="tag.color">{{
+                          tag.name }}</el-tag>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-popover>
+                  </template>
+                </el-popover>
 
-            </template>
-          </el-table-column>
+              </template>
+            </el-table-column>
 
-          <el-table-column label="操作" width="150" align="center">
-            <template #default="scope">
-              <el-button link type="danger" @click="deleteAttendee(scope.row.attendeesId)">Delete</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </template>
+            <el-table-column label="操作" width="150" align="center">
+              <template #default="scope">
+                <el-button link type="danger" @click="deleteAttendee(scope.row.attendeesId)">Delete</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
 
-      <template #pagination-box>
-        <el-pagination layout="prev, pager, next" :page-count="Number(attendeeList.pages)"
-          :default-page-size="Number(attendeeList.size)" v-model:current-page="currentPage"
-          :hide-on-single-page="true" />
-      </template>
-    </BasicComponent>
-  </div>
-
-  <!-- Excel批量更新對話框 -->
-  <el-dialog v-model="importExcelDialogState.isOpen" title="匯入 Excel 檔案">
-    <div class="template-tips-content">
-      <ul class="step-list" style="list-style-type: decimal;">
-        <li>匯入與會者excel進行更新</li>
-        <li>注意事項:
-          <ul class="sub-list">
-            <li>只允許「收據編號」欄位更新，其餘欄位無效</li>
-          </ul>
-        </li>
-      </ul>
+        <template #pagination-box>
+          <el-pagination layout="prev, pager, next" :page-count="Number(attendeeList.pages)"
+            :default-page-size="Number(attendeeList.size)" v-model:current-page="currentPage"
+            :hide-on-single-page="true" />
+        </template>
+      </BasicComponent>
     </div>
-    <div class="upload-excel-content">
-      <el-upload ref="uploadRef" drag class="upload-demo" :limit="1" :on-change="handleUpload" :auto-upload="false"
-        :on-remove="handleRemove">
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">
-          Drop file here or <em>click to upload</em>
-        </div>
-      </el-upload>
-    </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="danger" plain @click="importExcelDialogState.closeDialog()">取消</el-button>
-      <el-button type="success" plain @click="handleImportExcel">確定</el-button>
-    </span>
-  </el-dialog>
 
-  <el-dialog v-model="importExcelResultDialogState.isOpen" title="匯入結果" width="30%">
-    <div v-if="importExcelResultDialogState.resultData">
-      <p>總共 {{ importExcelResultDialogState.resultData.totalCount }} 條數據</p>
-      <p>成功 {{ importExcelResultDialogState.resultData.successCount }} 條</p>
-      <p>失敗 {{ importExcelResultDialogState.resultData.failCount }} 條</p>
-      <div v-if="importExcelResultDialogState.resultData.failCount > 0">
-        <h3>失敗詳情：</h3>
-        <ul>
-          <li v-for="(fail, index) in importExcelResultDialogState.resultData.failList" :key="index">
-            行 {{ fail.rows }}: {{ fail.message }}
+    <!-- Excel批量更新對話框 -->
+    <el-dialog v-model="importExcelDialogState.isOpen" title="匯入 Excel 檔案">
+      <div class="template-tips-content">
+        <ul class="step-list" style="list-style-type: decimal;">
+          <li>匯入與會者excel進行更新</li>
+          <li>注意事項:
+            <ul class="sub-list">
+              <li>只允許「收據編號」欄位更新，其餘欄位無效</li>
+            </ul>
           </li>
         </ul>
       </div>
-    </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="primary" plain @click="importExcelResultDialogState.closeDialog()">確定</el-button>
-    </span>
+      <div class="upload-excel-content">
+        <el-upload ref="uploadRef" drag class="upload-demo" :limit="1" :on-change="handleUpload" :auto-upload="false"
+          :on-remove="handleRemove">
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
+        </el-upload>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" plain @click="importExcelDialogState.closeDialog()">取消</el-button>
+        <el-button type="success" plain @click="handleImportExcel">確定</el-button>
+      </span>
+    </el-dialog>
 
-  </el-dialog>
+    <el-dialog v-model="importExcelResultDialogState.isOpen" title="匯入結果" width="30%">
+      <div v-if="importExcelResultDialogState.resultData">
+        <p>總共 {{ importExcelResultDialogState.resultData.totalCount }} 條數據</p>
+        <p>成功 {{ importExcelResultDialogState.resultData.successCount }} 條</p>
+        <p>失敗 {{ importExcelResultDialogState.resultData.failCount }} 條</p>
+        <div v-if="importExcelResultDialogState.resultData.failCount > 0">
+          <h3>失敗詳情：</h3>
+          <ul>
+            <li v-for="(fail, index) in importExcelResultDialogState.resultData.failList" :key="index">
+              行 {{ fail.rows }}: {{ fail.message }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" plain @click="importExcelResultDialogState.closeDialog()">確定</el-button>
+      </span>
+
+    </el-dialog>
+  </div>
 
 
 </template>
