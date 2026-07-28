@@ -27,6 +27,7 @@
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="國籍" prop="country"></el-table-column>
         <el-table-column label="任職單位" prop="affiliation"></el-table-column>
+        <el-table-column label="職稱" prop="jobTitle"></el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
             <el-button type="primary" link @click="openEditDialog(scope.row)">Edit</el-button>
@@ -55,6 +56,9 @@
               </el-form-item>
               <el-form-item label="所屬機構:" prop="affiliation">
                 <el-input v-model="addFormData.affiliation"></el-input>
+              </el-form-item>
+              <el-form-item label="職稱:" prop="jobTitle">
+                <el-input v-model="addFormData.jobTitle"></el-input>
               </el-form-item>
             </div>
             <div class="top-right">
@@ -240,7 +244,7 @@ onMounted(() => {
   getInvitedSpeakerByPagination();
 })
 
-const envMinio = import.meta.env.VITE_MINIO_API_URL;
+const envMinio = import.meta.env.VITE_MINIO_API;
 const envAPI = import.meta.env.VITE_APP_BASE_API;
 
 /**============================================ */
@@ -266,6 +270,7 @@ const addFormData = reactive({
   name: '',
   country: '',
   affiliation: "",
+  jobTitle: "",
   educationalBackground: [educationalBackgroundItem],
   workExperience: [workExperienceItem],
   publication: [publicationsItem],
