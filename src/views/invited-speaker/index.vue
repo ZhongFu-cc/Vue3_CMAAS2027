@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="國籍" prop="country"></el-table-column>
-        <el-table-column label="任職單位" prop="affiliation"></el-table-column>
+        <el-table-column label="講題" prop="affiliation"></el-table-column>
         <el-table-column label="職稱" prop="jobTitle"></el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
@@ -54,7 +54,7 @@
                   <el-option v-for="item in countries" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="所屬機構:" prop="affiliation">
+              <el-form-item label="講題:" prop="affiliation">
                 <el-input v-model="addFormData.affiliation"></el-input>
               </el-form-item>
               <el-form-item label="職稱:" prop="jobTitle">
@@ -143,8 +143,11 @@
                   <el-option v-for="item in countries" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="所屬機構:" prop="affiliation">
+              <el-form-item label="講題:" prop="affiliation">
                 <el-input v-model="editForm.affiliation"></el-input>
+              </el-form-item>
+              <el-form-item label="職稱:" prop="jobTitle">
+                <el-input v-model="editForm.jobTitle"></el-input>
               </el-form-item>
 
             </div>
@@ -335,10 +338,12 @@ const editForm = reactive<any>({
   name: '',
   country: '',
   affiliation: "",
+  jobTitle: "",
   educationalBackground: [],
   workExperience: [],
   publication: [],
   award: [],
+  isPublished: 1,
 })
 
 
@@ -349,6 +354,7 @@ const openEditDialog = (row: any) => {
   editForm.name = row.name;
   editForm.country = row.country;
   editForm.affiliation = row.affiliation;
+  editForm.jobTitle = row.jobTitle;
   editForm.educationalBackground = row.educationalBackground;
   editForm.workExperience = row.workExperience;
   editForm.publication = row.publication;
